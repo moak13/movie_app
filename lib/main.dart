@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import 'core/app/app.locator.dart';
 import 'core/app/app.router.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupLocator();
   runApp(const MyApp());
 }
 
