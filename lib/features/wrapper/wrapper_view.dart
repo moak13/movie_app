@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import 'view_model/wrapper_viewmodel.dart';
+import 'widgets/get_index_view.dart';
 
 class WrapperView extends StatelessWidget {
   const WrapperView({Key? key}) : super(key: key);
@@ -15,11 +16,19 @@ class WrapperView extends StatelessWidget {
         WrapperViewModel model,
         Widget? child,
       ) {
-        return const Scaffold(
-          body: Center(
-            child: Text(
-              'Wrapper View',
+        return Scaffold(
+          body: SafeArea(
+            child: GetIndexView(
+              index: model.currentIndex,
             ),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.movie)),
+              BottomNavigationBarItem(icon: Icon(Icons.favorite)),
+            ],
+            currentIndex: model.currentIndex,
+            onTap: model.setIndex,
           ),
         );
       },
