@@ -10,11 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../../features/splash/splash_view.dart';
 import '../../features/wrapper/wrapper_view.dart';
 
 class Routes {
+  static const String splashView = '/';
   static const String wrapperView = '/wrapper-view';
   static const all = <String>{
+    splashView,
     wrapperView,
   };
 }
@@ -23,11 +26,18 @@ class StackedRouter extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
+    RouteDef(Routes.splashView, page: SplashView),
     RouteDef(Routes.wrapperView, page: WrapperView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, StackedRouteFactory>{
+    SplashView: (data) {
+      return buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const SplashView(),
+        settings: data,
+      );
+    },
     WrapperView: (data) {
       return buildAdaptivePageRoute<dynamic>(
         builder: (context) => const WrapperView(),
@@ -42,6 +52,22 @@ class StackedRouter extends RouterBase {
 /// *************************************************************************
 
 extension NavigatorStateExtension on NavigationService {
+  Future<dynamic> navigateToSplashView({
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo(
+      Routes.splashView,
+      id: routerId,
+      preventDuplicates: preventDuplicates,
+      parameters: parameters,
+      transition: transition,
+    );
+  }
+
   Future<dynamic> navigateToWrapperView({
     int? routerId,
     bool preventDuplicates = true,
