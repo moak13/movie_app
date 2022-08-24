@@ -1,3 +1,3 @@
 import 'package:stacked/stacked.dart';
 
-class WrapperViewModel extends BaseViewModel {}
+class WrapperViewModel extends IndexTrackingViewModel {}
