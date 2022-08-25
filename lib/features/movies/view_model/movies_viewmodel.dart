@@ -9,8 +9,10 @@ import '../../../core/stores/movie_store.dart';
 
 class MoviesViewModel extends StreamViewModel<List<Movie>> {
   final _navigationService = locator<NavigationService>();
+  final _snackbarService = locator<SnackbarService>();
   final _movieStore = locator<MovieStore>();
   final _log = getLogger('MoviesViewModel');
+
   @override
   Stream<List<Movie>> get stream => _movieStore.getStreamMovies();
 
@@ -19,5 +21,11 @@ class MoviesViewModel extends StreamViewModel<List<Movie>> {
     _navigationService.navigateToMovieView(
       movie: movie,
     );
+  }
+
+  @override
+  void onError(error) {
+    _snackbarService.showSnackbar(message: error);
+    super.onError(error);
   }
 }
