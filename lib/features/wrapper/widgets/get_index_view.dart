@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../favorites/favorites_view.dart';
 import '../../movies/movies_view.dart';
+import '../../search/search_view.dart';
 
 class GetIndexView extends StatelessWidget {
   final int? index;
@@ -13,7 +13,7 @@ class GetIndexView extends StatelessWidget {
       case 0:
         return const MoviesView();
       case 1:
-        return const FavoritesView();
+        return const SearchView();
       default:
         return const MoviesView();
     }
