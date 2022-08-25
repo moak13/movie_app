@@ -24,8 +24,12 @@ class WrapperView extends StatelessWidget {
           ),
           bottomNavigationBar: BottomNavigationBar(
             items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.movie)),
-              BottomNavigationBarItem(icon: Icon(Icons.favorite)),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.movie),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+              ),
             ],
             currentIndex: model.currentIndex,
             onTap: model.setIndex,

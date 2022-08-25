@@ -11,19 +11,16 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../features/movie/movie_view.dart';
-import '../../features/search/search_view.dart';
 import '../../features/splash/splash_view.dart';
 import '../../features/wrapper/wrapper_view.dart';
 
 class Routes {
   static const String splashView = '/';
   static const String wrapperView = '/wrapper-view';
-  static const String searchView = '/search-view';
   static const String movieView = '/movie-view';
   static const all = <String>{
     splashView,
     wrapperView,
-    searchView,
     movieView,
   };
 }
@@ -34,7 +31,6 @@ class StackedRouter extends RouterBase {
   final _routes = <RouteDef>[
     RouteDef(Routes.splashView, page: SplashView),
     RouteDef(Routes.wrapperView, page: WrapperView),
-    RouteDef(Routes.searchView, page: SearchView),
     RouteDef(Routes.movieView, page: MovieView),
   ];
   @override
@@ -49,12 +45,6 @@ class StackedRouter extends RouterBase {
     WrapperView: (data) {
       return buildAdaptivePageRoute<dynamic>(
         builder: (context) => const WrapperView(),
-        settings: data,
-      );
-    },
-    SearchView: (data) {
-      return buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const SearchView(),
         settings: data,
       );
     },
@@ -97,22 +87,6 @@ extension NavigatorStateExtension on NavigationService {
   }) async {
     return navigateTo(
       Routes.wrapperView,
-      id: routerId,
-      preventDuplicates: preventDuplicates,
-      parameters: parameters,
-      transition: transition,
-    );
-  }
-
-  Future<dynamic> navigateToSearchView({
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo(
-      Routes.searchView,
       id: routerId,
       preventDuplicates: preventDuplicates,
       parameters: parameters,
