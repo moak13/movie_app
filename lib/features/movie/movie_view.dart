@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../core/models/movie_model.dart';
 import 'view_model/movie_viewmodel.dart';
 
 class MovieView extends StatelessWidget {
-  const MovieView({Key? key}) : super(key: key);
+  final Movie? movie;
+  const MovieView({Key? key, this.movie}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

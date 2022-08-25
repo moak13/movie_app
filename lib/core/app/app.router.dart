@@ -13,6 +13,7 @@ import 'package:stacked_services/stacked_services.dart';
 import '../../features/movie/movie_view.dart';
 import '../../features/splash/splash_view.dart';
 import '../../features/wrapper/wrapper_view.dart';
+import '../models/movie_model.dart';
 
 class Routes {
   static const String splashView = '/';
@@ -49,12 +50,29 @@ class StackedRouter extends RouterBase {
       );
     },
     MovieView: (data) {
+      var args = data.getArgs<MovieViewArguments>(
+        orElse: () => MovieViewArguments(),
+      );
       return buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const MovieView(),
+        builder: (context) => MovieView(
+          key: args.key,
+          movie: args.movie,
+        ),
         settings: data,
       );
     },
   };
+}
+
+/// ************************************************************************
+/// Arguments holder classes
+/// *************************************************************************
+
+/// MovieView arguments holder class
+class MovieViewArguments {
+  final Key? key;
+  final Movie? movie;
+  MovieViewArguments({this.key, this.movie});
 }
 
 /// ************************************************************************
@@ -95,6 +113,8 @@ extension NavigatorStateExtension on NavigationService {
   }
 
   Future<dynamic> navigateToMovieView({
+    Key? key,
+    Movie? movie,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -103,6 +123,7 @@ extension NavigatorStateExtension on NavigationService {
   }) async {
     return navigateTo(
       Routes.movieView,
+      arguments: MovieViewArguments(key: key, movie: movie),
       id: routerId,
       preventDuplicates: preventDuplicates,
       parameters: parameters,
