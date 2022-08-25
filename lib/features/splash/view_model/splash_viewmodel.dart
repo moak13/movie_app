@@ -14,6 +14,7 @@ class SplashViewModel extends BaseViewModel {
   final _log = getLogger('SplashViewModel');
 
   void _actionRouteWrapperView() {
+    _log.i('routing invoked');
     _navigationService.clearStackAndShow(Routes.wrapperView);
   }
 

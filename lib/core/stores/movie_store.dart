@@ -1,5 +1,3 @@
-import 'package:stacked/stacked.dart';
-
 import '../app/app.locator.dart';
 import '../app/app.logger.dart';
 import '../models/movie_model.dart';
@@ -7,7 +5,7 @@ import '../services/database_service.dart';
 
 const String _movieTable = 'movie';
 
-class MovieStore extends BaseViewModel {
+class MovieStore {
   final _databaseService = locator<DatabaseService>();
   final _log = getLogger('MovieStore');
 
@@ -28,13 +26,11 @@ class MovieStore extends BaseViewModel {
   Future<void> addMovie({Movie? movie}) async {
     _log.i('adding movie');
     await _databaseService.database!.insert(_movieTable, movie!.toJson());
-    notifyListeners();
   }
 
   Future<void> removeMovie({Movie? movie}) async {
     _log.i('removing movie');
     await _databaseService.database!
         .delete(_movieTable, where: "Title = ?", whereArgs: [movie?.title]);
-    notifyListeners();
   }
 }

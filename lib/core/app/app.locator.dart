@@ -12,6 +12,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../services/data_connection_service.dart';
 import '../services/database_service.dart';
+import '../stores/movie_store.dart';
 
 final locator = StackedLocator.instance;
 
@@ -23,8 +24,10 @@ Future<void> setupLocator(
 
 // Register dependencies
   locator.registerLazySingleton(() => NavigationService());
+  locator.registerLazySingleton(() => SnackbarService());
   locator.registerLazySingleton(() => DatabaseMigrationService());
   locator.registerLazySingleton(() => DatabaseService());
+  locator.registerLazySingleton(() => MovieStore());
   locator.registerLazySingleton<DataConnectionService>(
       () => DataConnectionServiceImpl());
 }
