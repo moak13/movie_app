@@ -4,6 +4,7 @@ import 'package:stacked_services/stacked_services.dart';
 import '../../features/movie/movie_view.dart';
 import '../../features/splash/splash_view.dart';
 import '../../features/wrapper/wrapper_view.dart';
+import '../services/data_connection_service.dart';
 
 @StackedApp(
   routes: [
@@ -13,6 +14,11 @@ import '../../features/wrapper/wrapper_view.dart';
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
+    LazySingleton(
+      classType: DataConnectionServiceImpl,
+      asType: DataConnectionService,
+    ),
   ],
+  logger: StackedLogger(),
 )
 class AppSetup {}
