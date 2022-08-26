@@ -13,6 +13,7 @@ class MoviesView extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeMg.init(context);
     return ViewModelBuilder<MoviesViewModel>.reactive(
+      onModelReady: (model) => model.initialise(),
       viewModelBuilder: () => MoviesViewModel(),
       builder: (
         BuildContext context,
@@ -30,7 +31,7 @@ class MoviesView extends StatelessWidget {
               Expanded(
                 child: Builder(
                   builder: (context) {
-                    if (model.data?.isEmpty == true) {
+                    if (model.data?.isEmpty == true || model.data == null) {
                       return const Center(
                         child: Text('No Favorite movie(s) Saved.'),
                       );
