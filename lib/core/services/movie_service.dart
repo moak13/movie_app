@@ -32,7 +32,7 @@ class MovieServiceImpl implements MovieService {
       );
       return Movie.fromJson(response);
     } on DioError catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }
