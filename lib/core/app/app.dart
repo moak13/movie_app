@@ -7,6 +7,7 @@ import '../../features/splash/splash_view.dart';
 import '../../features/wrapper/wrapper_view.dart';
 import '../services/data_connection_service.dart';
 import '../services/database_service.dart';
+import '../services/network_service.dart';
 import '../stores/movie_store.dart';
 
 @StackedApp(
@@ -24,6 +25,10 @@ import '../stores/movie_store.dart';
     LazySingleton(
       classType: DataConnectionServiceImpl,
       asType: DataConnectionService,
+    ),
+    LazySingleton(
+      classType: DioHttpServiceImpl,
+      asType: DioHttpService,
     ),
   ],
   logger: StackedLogger(),
