@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
+import '../app/app.logger.dart';
 import '../utils/config.dart';
 
 abstract class DioHttpService {
@@ -17,6 +18,7 @@ abstract class DioHttpService {
 }
 
 class DioHttpServiceImpl extends DioHttpService {
+  final _log = getLogger('DioHttpServiceImpl');
   late final Dio dio;
 
   DioHttpServiceImpl() {
@@ -40,6 +42,7 @@ class DioHttpServiceImpl extends DioHttpService {
     String endpoint, {
     Map<String, dynamic>? queryParameters,
   }) async {
+    _log.i('get call triggered');
     try {
       Response response = await dio.get(
         endpoint,
@@ -47,8 +50,8 @@ class DioHttpServiceImpl extends DioHttpService {
       );
 
       return response.data;
-    } catch (e) {
-      rethrow;
+    } on DioError catch (e) {
+      throw e;
     }
   }
 
