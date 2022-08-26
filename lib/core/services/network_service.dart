@@ -51,7 +51,7 @@ class DioHttpServiceImpl extends DioHttpService {
 
       return response.data;
     } on DioError catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
