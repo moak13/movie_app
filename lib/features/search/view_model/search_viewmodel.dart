@@ -4,6 +4,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../../../core/app/app.locator.dart';
 import '../../../core/app/app.logger.dart';
+import '../../../core/app/app.router.dart';
 import '../../../core/extensions/dio_error_extension.dart';
 import '../../../core/models/movie_model.dart';
 import '../../../core/services/data_connection_service.dart';
@@ -38,6 +39,9 @@ class SearchViewModel extends BaseViewModel {
     notifyListeners();
     try {
       movie = await _movieService.getMovieByTitle(title: title);
+      _navigationService.navigateToMovieView(
+        movie: movie,
+      );
       setBusy(false);
       notifyListeners();
     } on DioError catch (e) {
