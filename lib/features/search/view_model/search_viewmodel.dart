@@ -1,17 +1,17 @@
 import 'package:dio/dio.dart';
-import 'package:movie_app/core/enum/snack_bar_enum.dart';
-import 'package:movie_app/core/stores/blocked_store.dart';
-import 'package:movie_app/core/extensions/string_extenstion.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../core/app/app.locator.dart';
 import '../../../core/app/app.logger.dart';
 import '../../../core/app/app.router.dart';
+import '../../../core/enum/snack_bar_enum.dart';
 import '../../../core/extensions/dio_error_extension.dart';
+import '../../../core/extensions/string_extenstion.dart';
 import '../../../core/models/movie_model.dart';
 import '../../../core/services/data_connection_service.dart';
 import '../../../core/services/movie_service.dart';
+import '../../../core/stores/blocked_store.dart';
 import '../../../core/utils/string_util.dart';
 
 class SearchViewModel extends BaseViewModel {
