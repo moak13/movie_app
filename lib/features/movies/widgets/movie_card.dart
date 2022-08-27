@@ -2,48 +2,65 @@ import 'package:flutter/material.dart';
 
 import '../../../core/models/movie_model.dart';
 import '../../../core/utils/size_manager.dart';
-import '../../../core/utils/string_util.dart';
+import 'card_image.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie? movie;
   final VoidCallback? onTap;
-  const MovieCard({Key? key, this.movie, this.onTap}) : super(key: key);
+  const MovieCard({
+    Key? key,
+    this.movie,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     SizeMg.init(context);
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         child: Container(
+          height: SizeMg.height(230),
+          width: SizeMg.width(200),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.orangeAccent,
+            borderRadius: BorderRadius.circular(
+              SizeMg.radius(5),
+            ),
+          ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Builder(builder: (context) {
-                if (StringUtil.isNotEmpty(movie?.poster)) {
-                  return Container(
-                    height: SizeMg.height(40),
-                    width: SizeMg.width(40),
-                    color: Colors.red,
-                  );
-                }
-                return Container(
-                  height: SizeMg.height(40),
-                  width: SizeMg.width(40),
-                  color: Colors.yellow,
-                );
-              }),
-              Text('${movie?.title}'),
-              SizedBox(
-                height: SizeMg.height(2),
-              ),
-              FittedBox(
-                child: Text('${movie?.plot}'),
+              CardImage(
+                imageUrl: '${movie?.poster}',
               ),
               SizedBox(
                 height: SizeMg.height(5),
               ),
-              Text('${movie?.rated}'),
+              Text(
+                '${movie?.title}',
+                style: theme.textTheme.titleLarge,
+              ),
+              SizedBox(
+                height: SizeMg.height(2),
+              ),
+              Text(
+                '${movie?.plot}',
+                textAlign: TextAlign.justify,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.subtitle1,
+              ),
+              SizedBox(
+                height: SizeMg.height(5),
+              ),
+              Text(
+                '${movie?.imdbRating}',
+                style: theme.textTheme.bodySmall,
+              ),
             ],
           ),
         ),
