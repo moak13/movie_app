@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../core/utils/context_util.dart';
 import '../../core/utils/size_manager.dart';
 import '../../core/utils/string_util.dart';
 import 'view_model/search_viewmodel.dart';
@@ -82,10 +83,15 @@ class SearchView extends StatelessWidget {
             ),
           );
         }
-        return Scaffold(
-          backgroundColor: theme.scaffoldBackgroundColor,
-          body: Stack(
-            children: children,
+        return GestureDetector(
+          onTap: () {
+            ContextUtils.hideKeyboard(context);
+          },
+          child: Scaffold(
+            backgroundColor: theme.scaffoldBackgroundColor,
+            body: Stack(
+              children: children,
+            ),
           ),
         );
       },
