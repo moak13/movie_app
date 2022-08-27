@@ -17,7 +17,7 @@ abstract class DioHttpService {
   });
 }
 
-class DioHttpServiceImpl extends DioHttpService {
+class DioHttpServiceImpl implements DioHttpService {
   final _log = getLogger('DioHttpServiceImpl');
   late final Dio dio;
 
