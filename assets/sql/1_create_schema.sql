@@ -13,5 +13,13 @@ CREATE TABLE IF NOT EXISTS movie (
 
 CREATE TABLE IF NOT EXISTS blocked (
     id INTEGER PRIMARY KEY,
-    Title Text
+    Title Text,
+    Rated Text,
+    Released DATETIME,
+    Plot Text,
+    Language Text,
+    Country Text,
+    Poster Text,
+    imdbRating Text,
+    Type Text
 );

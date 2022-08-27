@@ -4,6 +4,9 @@ import 'package:stacked/stacked.dart';
 import '../../core/models/movie_model.dart';
 import '../../core/utils/size_manager.dart';
 import 'view_model/movie_viewmodel.dart';
+import 'widgets/action_button.dart';
+import 'widgets/content_holder.dart';
+import 'widgets/plot_holder.dart';
 
 class MovieView extends StatelessWidget {
   final Movie? movie;
@@ -11,8 +14,12 @@ class MovieView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     SizeMg.init(context);
     return ViewModelBuilder<MovieViewModel>.reactive(
+      onModelReady: (model) {
+        model.checkIsBlocked(movie: movie);
+      },
       viewModelBuilder: () => MovieViewModel(),
       builder: (
         BuildContext context,
@@ -20,85 +27,176 @@ class MovieView extends StatelessWidget {
         Widget? child,
       ) {
         return Scaffold(
+          backgroundColor: theme.scaffoldBackgroundColor,
           appBar: AppBar(
-            title: Text('${movie?.title}'),
+            title: Text(
+              '${movie?.title}',
+              style: theme.textTheme.titleLarge,
+            ),
+            elevation: 0,
           ),
-          body: SafeArea(
-            child: Column(
-              children: [
-                Container(
-                  height: SizeMg.height(300),
-                  width: SizeMg.screenWidth,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage('${movie?.poster}'),
-                      fit: BoxFit.cover,
+          body: Column(
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    height: SizeMg.height(300),
+                    width: SizeMg.screenWidth,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage('${movie?.poster}'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
+                  Positioned(
                     top: SizeMg.height(10),
-                    left: SizeMg.width(10),
                     right: SizeMg.width(10),
+                    child: Container(
+                      height: SizeMg.height(25),
+                      width: SizeMg.width(45),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(
+                          SizeMg.radius(10),
+                        ),
+                      ),
+                      child: Text(
+                        '${movie?.rated}',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
                   ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('${movie?.title}'),
-                          Container(
-                            height: SizeMg.height(25),
-                            width: SizeMg.width(45),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.teal,
-                              borderRadius: BorderRadius.circular(
-                                SizeMg.radius(10),
-                              ),
-                            ),
-                            child: Text('${movie?.imdbRating}'),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: SizeMg.height(20),
-                      ),
-                      Container(
-                        height: SizeMg.height(100),
-                        width: SizeMg.screenWidth,
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.only(
-                          left: SizeMg.width(5),
-                          right: SizeMg.width(5),
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.pinkAccent,
-                          borderRadius: BorderRadius.circular(
-                            SizeMg.radius(10),
-                          ),
-                        ),
-                        child: Text(
-                          '${movie?.plot}',
-                          textAlign: TextAlign.justify,
-                        ),
-                      ),
-                      SizedBox(
-                        height: SizeMg.height(30),
-                      ),
-                      TextButton.icon(
-                        onPressed: () {
-                          model.actionStoreMovie(movie: movie);
-                        },
-                        icon: const Icon(Icons.favorite),
-                        label: const Text('Favorite'),
-                      ),
-                    ],
-                  ),
+                ],
+              ),
+              Container(
+                width: SizeMg.screenWidth,
+                height: SizeMg.height(70),
+                color: Colors.grey,
+                padding: EdgeInsets.only(
+                  left: SizeMg.width(10),
+                  right: SizeMg.width(10),
                 ),
-              ],
-            ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Rating:',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    SizedBox(
+                      width: SizeMg.width(20),
+                    ),
+                    Container(
+                      height: SizeMg.height(25),
+                      width: SizeMg.width(45),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.teal,
+                        borderRadius: BorderRadius.circular(
+                          SizeMg.radius(10),
+                        ),
+                      ),
+                      child: Text(
+                        '${movie?.imdbRating}',
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: SizeMg.height(10),
+                  left: SizeMg.width(10),
+                  right: SizeMg.width(10),
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: SizeMg.height(20),
+                    ),
+                    PlotHolder(
+                      plot: movie?.plot,
+                    ),
+                    SizedBox(
+                      height: SizeMg.height(50),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ContentHolder(
+                              title: 'Type',
+                              content: movie?.type,
+                            ),
+                            SizedBox(
+                              height: SizeMg.height(10),
+                            ),
+                            ContentHolder(
+                              title: 'Language',
+                              content: movie?.language,
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ContentHolder(
+                              title: 'Release',
+                              content: movie?.released,
+                            ),
+                            SizedBox(
+                              height: SizeMg.height(10),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeMg.height(30),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ActionButton(
+                          title: 'Favorite',
+                          icon: Icons.favorite,
+                          onTap: () {
+                            model.actionStoreMovie(movie: movie);
+                          },
+                        ),
+                        Builder(builder: (context) {
+                          if (model.isBlocked) {
+                            return ActionButton(
+                              title: 'Unblock',
+                              icon: Icons.circle_outlined,
+                              onTap: () {
+                                model.actionUnblockMovie(movie: movie);
+                              },
+                            );
+                          }
+
+                          return ActionButton(
+                            title: 'Block',
+                            icon: Icons.block,
+                            onTap: () {
+                              model.actionBlockMovie(movie: movie);
+                            },
+                          );
+                        }),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
       },

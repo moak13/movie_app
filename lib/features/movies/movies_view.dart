@@ -27,7 +27,7 @@ class MoviesView extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Movie',
+                    'Movies',
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontSize: SizeMg.text(50),
                     ),

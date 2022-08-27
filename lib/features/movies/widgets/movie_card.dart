@@ -42,7 +42,9 @@ class MovieCard extends StatelessWidget {
               ),
               Text(
                 '${movie?.title}',
-                style: theme.textTheme.titleLarge,
+                softWrap: true,
+                overflow: TextOverflow.fade,
+                style: theme.textTheme.titleMedium,
               ),
               SizedBox(
                 height: SizeMg.height(2),
@@ -52,7 +54,7 @@ class MovieCard extends StatelessWidget {
                 textAlign: TextAlign.justify,
                 softWrap: true,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.subtitle1,
+                style: theme.textTheme.bodyMedium,
               ),
               SizedBox(
                 height: SizeMg.height(5),

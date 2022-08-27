@@ -2,14 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../app/app.locator.dart';
+import '../enum/snack_bar_enum.dart';
 
 void setupSnackbarUi() {
   final service = locator<SnackbarService>();
 
-  // Registers a config to be used when calling showSnackbar
-  service.registerSnackbarConfig(SnackbarConfig(
-    backgroundColor: Colors.red,
-    messageColor: Colors.white,
-    mainButtonTextColor: Colors.black,
-  ));
+  service.registerCustomSnackbarConfig(
+    variant: SnackBarType.success,
+    config: SnackbarConfig(
+      backgroundColor: Colors.green,
+      titleColor: Colors.black,
+      messageColor: Colors.white,
+      borderRadius: 1,
+    ),
+  );
+
+  service.registerCustomSnackbarConfig(
+    variant: SnackBarType.error,
+    config: SnackbarConfig(
+      backgroundColor: Colors.red,
+      titleColor: Colors.black,
+      messageColor: Colors.white,
+      borderRadius: 1,
+    ),
+  );
+
+  service.registerCustomSnackbarConfig(
+    variant: SnackBarType.info,
+    config: SnackbarConfig(
+      backgroundColor: Colors.blue,
+      titleColor: Colors.black,
+      messageColor: Colors.white,
+      borderRadius: 1,
+    ),
+  );
 }
