@@ -11,9 +11,9 @@ class MoviesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     SizeMg.init(context);
     return ViewModelBuilder<MoviesViewModel>.reactive(
-      onModelReady: (model) => model.initialise(),
       viewModelBuilder: () => MoviesViewModel(),
       builder: (
         BuildContext context,
@@ -21,26 +21,42 @@ class MoviesView extends StatelessWidget {
         Widget? child,
       ) {
         return Scaffold(
+          backgroundColor: theme.scaffoldBackgroundColor,
           body: Column(
             children: [
-              Container(
-                width: double.infinity,
-                height: SizeMg.height(100),
-                color: Colors.yellow,
+              Row(
+                children: [
+                  Text(
+                    'Movie',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontSize: SizeMg.text(50),
+                    ),
+                  ),
+                ],
               ),
               Expanded(
                 child: Builder(
                   builder: (context) {
                     if (model.data?.isEmpty == true || model.data == null) {
-                      return const Center(
-                        child: Text('No Favorite movie(s) Saved.'),
+                      return Center(
+                        child: Text(
+                          'No Favorite movie(s) Saved.',
+                          style: theme.textTheme.bodyMedium,
+                        ),
                       );
                     }
                     return GridView.builder(
                       shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                      padding: EdgeInsets.only(
+                        top: SizeMg.height(15),
+                        left: SizeMg.width(5),
+                        right: SizeMg.width(5),
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
+                        mainAxisSpacing: SizeMg.height(10),
+                        crossAxisSpacing: SizeMg.width(5),
+                        mainAxisExtent: SizeMg.height(230),
                       ),
                       itemCount: model.data?.length,
                       itemBuilder: (BuildContext context, int index) {
