@@ -8,6 +8,6 @@ class MovieViewModel extends BaseViewModel {
   final _movieStore = locator<MovieStore>();
 
   void actionStoreMovie({Movie? movie}) async {
-    _movieStore.addMovie(movie: movie);
+    await _movieStore.addMovie(movie: movie);
   }
 }

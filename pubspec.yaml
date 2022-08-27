@@ -38,6 +38,7 @@ dependencies:
   sqflite: ^2.0.3+1
   sqflite_migration_service: ^2.0.0-nullsafety.1
   stacked: ^2.3.15
+  stacked_core: ^1.2.4
   stacked_services: ^0.9.5
 
 dev_dependencies:

@@ -14,6 +14,7 @@ import '../services/data_connection_service.dart';
 import '../services/database_service.dart';
 import '../services/movie_service.dart';
 import '../services/network_service.dart';
+import '../stores/blocked_store.dart';
 import '../stores/movie_store.dart';
 
 final locator = StackedLocator.instance;
@@ -30,6 +31,7 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => DatabaseMigrationService());
   locator.registerLazySingleton(() => DatabaseService());
   locator.registerLazySingleton(() => MovieStore());
+  locator.registerLazySingleton(() => BlockedStore());
   locator.registerLazySingleton<DataConnectionService>(
       () => DataConnectionServiceImpl());
   locator.registerLazySingleton<DioHttpService>(() => DioHttpServiceImpl());

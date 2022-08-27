@@ -1,5 +1,3 @@
-import 'package:stacked/stacked.dart';
-
 import '../app/app.locator.dart';
 import '../app/app.logger.dart';
 import '../models/blocked_model.dart';
@@ -7,7 +5,7 @@ import '../services/database_service.dart';
 
 const String _blockedTable = 'blocked';
 
-class BlockedStore extends BaseViewModel {
+class BlockedStore {
   final _databaseService = locator<DatabaseService>();
   final _log = getLogger('BlockedStore');
 
@@ -28,14 +26,12 @@ class BlockedStore extends BaseViewModel {
   Future<void> addBlockedTitle({Blocked? title}) async {
     _log.i('adding blocked title');
     await _databaseService.database!.insert(_blockedTable, title!.toJson());
-    notifyListeners();
   }
 
   Future<void> removeBlockedTitle({Blocked? blockedMovie}) async {
     _log.i('removing blocked title');
     await _databaseService.database!.delete(_blockedTable,
         where: "Title = ?", whereArgs: [blockedMovie?.title]);
-    notifyListeners();
   }
 
   Future<bool> isBlocked({String? title}) async {
@@ -45,10 +41,8 @@ class BlockedStore extends BaseViewModel {
         .query(_blockedTable, where: "Title = ?", whereArgs: [title]);
     if ((records).isEmpty) {
       status = false;
-      notifyListeners();
     } else {
       status = true;
-      notifyListeners();
     }
     return status;
   }

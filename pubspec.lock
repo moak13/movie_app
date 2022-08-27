@@ -666,7 +666,7 @@ packages:
     source: hosted
     version: "2.3.15"
   stacked_core:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: stacked_core
       url: "https://pub.dartlang.org"

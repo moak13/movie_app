@@ -9,6 +9,7 @@ import '../services/data_connection_service.dart';
 import '../services/database_service.dart';
 import '../services/movie_service.dart';
 import '../services/network_service.dart';
+import '../stores/blocked_store.dart';
 import '../stores/movie_store.dart';
 
 @StackedApp(
@@ -23,6 +24,7 @@ import '../stores/movie_store.dart';
     LazySingleton(classType: DatabaseMigrationService),
     LazySingleton(classType: DatabaseService),
     LazySingleton(classType: MovieStore),
+    LazySingleton(classType: BlockedStore),
     LazySingleton(
       classType: DataConnectionServiceImpl,
       asType: DataConnectionService,
