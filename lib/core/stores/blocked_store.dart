@@ -1,6 +1,6 @@
 import '../app/app.locator.dart';
 import '../app/app.logger.dart';
-import '../models/blocked_model.dart';
+import '../models/movie_model.dart';
 import '../services/database_service.dart';
 
 const String _blockedTable = 'blocked';
@@ -9,40 +9,49 @@ class BlockedStore {
   final _databaseService = locator<DatabaseService>();
   final _log = getLogger('BlockedStore');
 
-  Stream<List<Blocked>> getStreamBlockedTitles() async* {
+  Stream<List<Movie>> getStreamBlockedTitles() async* {
     _log.i('streaming blocked titles');
     List<Map<String, dynamic>> blockedResults =
         await _databaseService.database!.query(_blockedTable);
-    yield blockedResults.map((e) => Blocked.fromJson(e)).toList();
+    yield blockedResults.map((e) => Movie.fromJson(e)).toList();
   }
 
-  Future<List<Blocked>> getBlockedTitles() async {
+  Future<List<Movie>> getBlockedTitles() async {
     _log.i('fetching blocked titles');
     List<Map<String, dynamic>> blockedResults =
         await _databaseService.database!.query(_blockedTable);
-    return blockedResults.map((e) => Blocked.fromJson(e)).toList();
+    return blockedResults.map((e) => Movie.fromJson(e)).toList();
   }
 
-  Future<void> addBlockedTitle({Blocked? title}) async {
-    _log.i('adding blocked title');
-    await _databaseService.database!.insert(_blockedTable, title!.toJson());
+  Future<void> addBlockedTitle({Movie? movie}) async {
+    _log.i('adding blocked title: ${movie?.title}');
+    await _databaseService.database!.insert(_blockedTable, movie!.toJson());
   }
 
-  Future<void> removeBlockedTitle({Blocked? blockedMovie}) async {
-    _log.i('removing blocked title');
-    await _databaseService.database!.delete(_blockedTable,
-        where: "Title = ?", whereArgs: [blockedMovie?.title]);
+  Future<void> removeBlockedTitle({Movie? movie}) async {
+    _log.i('removing blocked title: ${movie?.title}');
+    await _databaseService.database!.delete(
+      _blockedTable,
+      where: "Title = ?",
+      whereArgs: [movie?.title],
+    );
   }
 
   Future<bool> isBlocked({String? title}) async {
     _log.i('checking blocked state for $title');
     bool status = false;
-    var records = await _databaseService.database!
-        .query(_blockedTable, where: "Title = ?", whereArgs: [title]);
-    if ((records).isEmpty) {
+    var records = await _databaseService.database!.query(
+      _blockedTable,
+      where: "Title = ?",
+      whereArgs: [title],
+    );
+    var data = records.map((e) => Movie.fromJson(e)).toList();
+    if (data.isEmpty) {
       status = false;
+      _log.i('status: $status');
     } else {
       status = true;
+      _log.i('status: $status');
     }
     return status;
   }
