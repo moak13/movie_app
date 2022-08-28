@@ -9,7 +9,6 @@ import '../../../core/enum/snack_bar_enum.dart';
 import '../../../core/extensions/dio_error_extension.dart';
 import '../../../core/extensions/string_extenstion.dart';
 import '../../../core/models/movie_model.dart';
-import '../../../core/services/data_connection_service.dart';
 import '../../../core/services/movie_service.dart';
 import '../../../core/stores/blocked_store.dart';
 import '../../../core/utils/string_util.dart';
@@ -17,7 +16,6 @@ import '../../../core/utils/string_util.dart';
 class SearchViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _snackbarService = locator<SnackbarService>();
-  final _connectionService = locator<DataConnectionService>();
   final _movieService = locator<MovieService>();
   final _blockedStore = locator<BlockedStore>();
 

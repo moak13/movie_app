@@ -14,6 +14,7 @@ void setupSnackbarUi() {
       titleColor: Colors.black,
       messageColor: Colors.white,
       borderRadius: 1,
+      snackPosition: SnackPosition.TOP,
     ),
   );
 
@@ -24,6 +25,7 @@ void setupSnackbarUi() {
       titleColor: Colors.black,
       messageColor: Colors.white,
       borderRadius: 1,
+      snackPosition: SnackPosition.TOP,
     ),
   );
 
@@ -34,6 +36,7 @@ void setupSnackbarUi() {
       titleColor: Colors.black,
       messageColor: Colors.white,
       borderRadius: 1,
+      snackPosition: SnackPosition.TOP,
     ),
   );
 }
