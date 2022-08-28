@@ -10,6 +10,7 @@ import 'package:sqflite_migration_service/sqflite_migration_service.dart';
 import 'package:stacked_core/stacked_core.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../services/connectivity_service.dart';
 import '../services/data_connection_service.dart';
 import '../services/database_service.dart';
 import '../services/movie_service.dart';
@@ -34,6 +35,8 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => BlockedStore());
   locator.registerLazySingleton<DataConnectionService>(
       () => DataConnectionServiceImpl());
+  locator.registerLazySingleton<ConnectivityService>(
+      () => ConnectivityServiceImpl());
   locator.registerLazySingleton<DioHttpService>(() => DioHttpServiceImpl());
   locator.registerLazySingleton<MovieService>(() => MovieServiceImpl());
 }

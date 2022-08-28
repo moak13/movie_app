@@ -10,6 +10,11 @@ class WrapperView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<WrapperViewModel>.reactive(
+      onModelReady: (model) {
+        model.stream.listen((event) {
+          model.actionShowNetworkStatus(event);
+        });
+      },
       viewModelBuilder: () => WrapperViewModel(),
       builder: (
         BuildContext context,
