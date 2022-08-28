@@ -25,14 +25,6 @@ class SearchViewModel extends BaseViewModel {
 
   final _log = getLogger("SearchViewModel");
 
-  String? _searchText = '';
-  String? get searchText => _searchText;
-
-  void actionSetTitle(String? title) {
-    _searchText = title;
-    notifyListeners();
-  }
-
   Future<void> actionSearchMovie({String? title}) async {
     _log.i('fetching movie: $title');
     if (StringUtil.isEmpty(title)) {
@@ -40,6 +32,7 @@ class SearchViewModel extends BaseViewModel {
         variant: SnackBarType.info,
         title: 'Info',
         message: 'Input a search query',
+        duration: const Duration(seconds: 3),
       );
       return;
     }
@@ -71,12 +64,22 @@ class SearchViewModel extends BaseViewModel {
     } on DioError catch (e) {
       _log.e('dio catch state triggered');
       setBusy(false);
-      _snackbarService.showSnackbar(message: '${e.errorMessage}');
+      _snackbarService.showCustomSnackBar(
+        variant: SnackBarType.error,
+        title: 'Error',
+        message: '${e.errorMessage}',
+        duration: const Duration(seconds: 3),
+      );
       notifyListeners();
     } catch (e) {
       _log.e('catch state triggered');
       setBusy(false);
-      _snackbarService.showSnackbar(message: e.toString());
+      _snackbarService.showCustomSnackBar(
+        variant: SnackBarType.error,
+        title: 'Error',
+        message: e.toString(),
+        duration: const Duration(seconds: 3),
+      );
       notifyListeners();
     } finally {
       setBusy(false);

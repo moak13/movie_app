@@ -31,7 +31,7 @@ class MovieServiceImpl implements MovieService {
         queryParameters: params,
       );
       return Movie.fromJson(response);
-    } on DioError catch (e) {
+    } on DioError {
       rethrow;
     }
   }

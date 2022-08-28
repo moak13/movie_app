@@ -50,7 +50,7 @@ class DioHttpServiceImpl implements DioHttpService {
       );
 
       return response.data;
-    } on DioError catch (e) {
+    } on DioError {
       rethrow;
     }
   }
