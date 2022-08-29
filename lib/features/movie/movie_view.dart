@@ -17,11 +17,7 @@ class MovieView extends StatelessWidget {
     var theme = Theme.of(context);
     SizeMg.init(context);
     return ViewModelBuilder<MovieViewModel>.reactive(
-      onModelReady: (model) async {
-        await model.checkIsBlocked(movie: movie);
-        await model.checkIsSaved(movie: movie);
-      },
-      viewModelBuilder: () => MovieViewModel(),
+      viewModelBuilder: () => MovieViewModel(movie),
       builder: (
         BuildContext context,
         MovieViewModel model,
@@ -167,8 +163,11 @@ class MovieView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Builder(builder: (context) {
-                          if (model.isSaved == true) {
-                            ActionButton(
+                          if (!model.isSavedStateReady) {
+                            return const CircularProgressIndicator.adaptive();
+                          }
+                          if (model.savedState) {
+                            return ActionButton(
                               title: 'Unfavorite',
                               icon: Icons.favorite,
                               onTap: () {
@@ -185,7 +184,10 @@ class MovieView extends StatelessWidget {
                           );
                         }),
                         Builder(builder: (context) {
-                          if (model.isBlocked == true) {
+                          if (!model.isBlockedStateReady) {
+                            return const CircularProgressIndicator.adaptive();
+                          }
+                          if (model.blockedState) {
                             return ActionButton(
                               title: 'Unblock',
                               icon: Icons.circle_outlined,

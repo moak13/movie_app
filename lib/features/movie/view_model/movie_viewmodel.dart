@@ -8,13 +8,28 @@ import '../../../core/models/movie_model.dart';
 import '../../../core/stores/blocked_store.dart';
 import '../../../core/stores/movie_store.dart';
 
+const String _movieSavedStreamKey = 'movie-saved-stream';
+const String _movieBlockedStreamkey = 'movie-blocked-stream';
+
 class MovieViewModel extends MultipleStreamViewModel {
   final _snackbarService = locator<SnackbarService>();
   final _movieStore = locator<MovieStore>();
   final _blockedStore = locator<BlockedStore>();
 
+  Movie? _movie;
+
+  MovieViewModel(Movie? movie) {
+    _movie = movie;
+  }
+
   bool isBlocked = false;
   bool isSaved = false;
+
+  bool get savedState => dataMap![_movieSavedStreamKey];
+  bool get isSavedStateReady => dataReady(_movieSavedStreamKey);
+
+  bool get blockedState => dataMap![_movieBlockedStreamkey];
+  bool get isBlockedStateReady => dataReady(_movieBlockedStreamkey);
 
   void actionSaveMovie({Movie? movie}) async {
     if (await checkIsSaved(movie: movie) == true) {
@@ -32,6 +47,7 @@ class MovieViewModel extends MultipleStreamViewModel {
       title: 'Info',
       variant: SnackBarType.info,
     );
+    streamsMap;
   }
 
   void actionUnsaveMovie({Movie? movie}) async {
@@ -43,6 +59,7 @@ class MovieViewModel extends MultipleStreamViewModel {
       title: 'Info',
       variant: SnackBarType.info,
     );
+    streamsMap;
   }
 
   void actionBlockMovie({Movie? movie}) async {
@@ -61,6 +78,7 @@ class MovieViewModel extends MultipleStreamViewModel {
       title: 'Info',
       variant: SnackBarType.info,
     );
+    streamsMap;
   }
 
   void actionUnblockMovie({Movie? movie}) async {
@@ -72,6 +90,7 @@ class MovieViewModel extends MultipleStreamViewModel {
       title: 'Info',
       variant: SnackBarType.info,
     );
+    streamsMap;
   }
 
   Future<bool> checkIsBlocked({Movie? movie}) async {
@@ -102,6 +121,16 @@ class MovieViewModel extends MultipleStreamViewModel {
   }
 
   @override
-  // TODO: implement streamsMap
-  Map<String, StreamData> get streamsMap => {};
+  Map<String, StreamData<bool>> get streamsMap => {
+        _movieSavedStreamKey: StreamData<bool>(
+          _movieStore.isStreamedSaved(
+            title: _movie?.title?.capitalizeFirst,
+          ),
+        ),
+        _movieBlockedStreamkey: StreamData<bool>(
+          _blockedStore.isStreamBlocked(
+            title: _movie?.title?.capitalizeFirst,
+          ),
+        ),
+      };
 }
