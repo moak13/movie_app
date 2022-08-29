@@ -3,6 +3,7 @@ import 'package:stacked/stacked.dart';
 
 import '../../../core/utils/size_manager.dart';
 import '../../../core/utils/string_util.dart';
+import '../../../core/utils/validator.dart';
 import '../view_model/search_viewmodel.dart';
 import 'info_box.dart';
 import 'search_button.dart';
@@ -10,6 +11,7 @@ import 'search_button.dart';
 class ContentWidget extends ViewModelWidget<SearchViewModel> {
   ContentWidget({Key? key}) : super(key: key, reactive: false);
   final TextEditingController controller = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context, SearchViewModel viewModel) {
     var theme = Theme.of(context);
@@ -38,16 +40,23 @@ class ContentWidget extends ViewModelWidget<SearchViewModel> {
               SizedBox(
                 height: SizeMg.height(50),
               ),
-              TextField(
-                controller: controller,
-                decoration: const InputDecoration(
-                  hintText: 'Search for a movie',
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: controller,
+                  decoration: const InputDecoration(
+                    hintText: 'Search for a movie',
+                  ),
+                  onFieldSubmitted: (value) {
+                    if (StringUtil.isEmpty(value)) {
+                      return;
+                    }
+                  },
+                  validator: (value) => Validator.validateField(
+                    value,
+                    errorMessage: 'Required',
+                  ),
                 ),
-                onSubmitted: (value) {
-                  if (StringUtil.isEmpty(value)) {
-                    return;
-                  }
-                },
               ),
               SizedBox(
                 height: SizeMg.height(300),
@@ -57,7 +66,9 @@ class ContentWidget extends ViewModelWidget<SearchViewModel> {
         ),
         SearchButton(
           onTap: () {
-            viewModel.actionSearchMovie(title: controller.text.trim());
+            if (_formKey.currentState?.validate() ?? false) {
+              viewModel.actionSearchMovie(title: controller.text.trim());
+            }
           },
         ),
         SizedBox(

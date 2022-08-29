@@ -25,15 +25,6 @@ class SearchViewModel extends BaseViewModel {
 
   Future<void> actionSearchMovie({String? title}) async {
     _log.i('fetching movie: $title');
-    if (StringUtil.isEmpty(title)) {
-      _snackbarService.showCustomSnackBar(
-        variant: SnackBarType.info,
-        title: 'Info',
-        message: 'Input a search query',
-        duration: const Duration(seconds: 3),
-      );
-      return;
-    }
 
     if (StringUtil.isNotEmpty(title)) {
       final bool = await _blockedStore.isBlocked(title: title?.capitalizeFirst);
