@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../core/utils/size_manager.dart';
 import 'view_model/splash_viewmodel.dart';
 
 class SplashView extends StatelessWidget {
@@ -8,6 +9,8 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    SizeMg.init(context);
     return ViewModelBuilder<SplashViewModel>.reactive(
       onModelReady: (model) {
         model.actionHandleStartUp();
@@ -18,10 +21,16 @@ class SplashView extends StatelessWidget {
         SplashViewModel model,
         Widget? child,
       ) {
-        return const Scaffold(
+        return Scaffold(
+          backgroundColor: theme.scaffoldBackgroundColor,
           body: Center(
             child: Text(
-              'Splash View',
+              'Movie App',
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: Colors.redAccent,
+                fontSize: SizeMg.text(50),
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         );
