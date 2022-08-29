@@ -17,8 +17,9 @@ class MovieView extends StatelessWidget {
     var theme = Theme.of(context);
     SizeMg.init(context);
     return ViewModelBuilder<MovieViewModel>.reactive(
-      onModelReady: (model) {
-        model.checkIsBlocked(movie: movie);
+      onModelReady: (model) async {
+        await model.checkIsBlocked(movie: movie);
+        await model.checkIsSaved(movie: movie);
       },
       viewModelBuilder: () => MovieViewModel(),
       builder: (
@@ -165,15 +166,26 @@ class MovieView extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        ActionButton(
-                          title: 'Favorite',
-                          icon: Icons.favorite,
-                          onTap: () {
-                            model.actionStoreMovie(movie: movie);
-                          },
-                        ),
                         Builder(builder: (context) {
-                          if (model.isBlocked) {
+                          if (model.isSaved == true) {
+                            ActionButton(
+                              title: 'Unfavorite',
+                              icon: Icons.favorite,
+                              onTap: () {
+                                model.actionUnsaveMovie(movie: movie);
+                              },
+                            );
+                          }
+                          return ActionButton(
+                            title: 'Favorite',
+                            icon: Icons.favorite_outline,
+                            onTap: () {
+                              model.actionSaveMovie(movie: movie);
+                            },
+                          );
+                        }),
+                        Builder(builder: (context) {
+                          if (model.isBlocked == true) {
                             return ActionButton(
                               title: 'Unblock',
                               icon: Icons.circle_outlined,

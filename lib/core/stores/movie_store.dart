@@ -33,4 +33,23 @@ class MovieStore {
     await _databaseService.database!
         .delete(_movieTable, where: "Title = ?", whereArgs: [movie?.title]);
   }
+
+  Future<bool> isSaved({String? title}) async {
+    _log.i('checking blocked state for $title');
+    bool status = false;
+    var records = await _databaseService.database!.query(
+      _movieTable,
+      where: "Title = ?",
+      whereArgs: [title],
+    );
+    var data = records.map((e) => Movie.fromJson(e)).toList();
+    if (data.isEmpty) {
+      status = false;
+      _log.i('status: $status');
+    } else {
+      status = true;
+      _log.i('status: $status');
+    }
+    return status;
+  }
 }
