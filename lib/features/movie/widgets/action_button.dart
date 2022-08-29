@@ -13,10 +13,14 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return TextButton.icon(
       onPressed: onTap,
       icon: Icon(icon),
-      label: Text(title),
+      label: Text(
+        title,
+        style: theme.textTheme.button,
+      ),
     );
   }
 }
