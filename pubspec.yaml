@@ -36,6 +36,7 @@ dependencies:
   flutter_screenutil: ^5.5.3+2
   internet_connection_checker: ^0.0.1+4
   logger: ^1.1.0
+  shimmer: ^2.0.0
   sqflite: ^2.0.3+1
   sqflite_migration_service: ^2.0.0-nullsafety.1
   stacked: ^2.3.15
