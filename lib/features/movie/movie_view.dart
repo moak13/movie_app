@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../core/models/movie_model.dart';
+import '../../core/shared_widgets/app_cache_network_image.dart';
+import '../../core/shared_widgets/image_error_widget.dart';
 import '../../core/utils/size_manager.dart';
 import 'view_model/movie_viewmodel.dart';
 import 'widgets/action_button.dart';
@@ -36,16 +38,29 @@ class MovieView extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Container(
-                    height: SizeMg.height(300),
-                    width: SizeMg.screenWidth,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage('${movie?.poster}'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  Builder(builder: (context) {
+                    if (movie?.poster == 'N/A') {
+                      return ImageErrorWidget(
+                        height: SizeMg.height(300),
+                      );
+                    }
+                    return AppCacheNetworkImage(
+                      imageUrl: '${movie?.poster}',
+                      height: SizeMg.height(300),
+                      imageBuilder: (context, imageProvider) {
+                        return Container(
+                          height: SizeMg.height(300),
+                          width: SizeMg.screenWidth,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage('${movie?.poster}'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
                   Positioned(
                     top: SizeMg.height(10),
                     right: SizeMg.width(10),
