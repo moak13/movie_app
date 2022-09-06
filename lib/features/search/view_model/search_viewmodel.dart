@@ -12,8 +12,9 @@ import '../../../core/models/movie_model.dart';
 import '../../../core/services/movie_service.dart';
 import '../../../core/stores/blocked_store.dart';
 import '../../../core/utils/string_util.dart';
+import '../search_view.form.dart';
 
-class SearchViewModel extends BaseViewModel {
+class SearchViewModel extends FormViewModel {
   final _navigationService = locator<NavigationService>();
   final _snackbarService = locator<SnackbarService>();
   final _movieService = locator<MovieService>();
@@ -23,7 +24,8 @@ class SearchViewModel extends BaseViewModel {
 
   final _log = getLogger("SearchViewModel");
 
-  Future<void> actionSearchMovie({String? title}) async {
+  Future<void> actionSearchMovie() async {
+    String? title = searchValue;
     _log.i('fetching movie: $title');
 
     if (StringUtil.isNotEmpty(title)) {
@@ -42,14 +44,12 @@ class SearchViewModel extends BaseViewModel {
       }
     }
     setBusy(true);
-    notifyListeners();
     try {
       movie = await _movieService.getMovieByTitle(title: title);
       _navigationService.navigateToMovieView(
         movie: movie,
       );
       setBusy(false);
-      notifyListeners();
     } on DioError catch (e) {
       _log.e('dio catch state triggered');
       setBusy(false);
@@ -59,7 +59,6 @@ class SearchViewModel extends BaseViewModel {
         message: '${e.errorMessage}',
         duration: const Duration(seconds: 3),
       );
-      notifyListeners();
     } catch (e) {
       _log.e('catch state triggered');
       setBusy(false);
@@ -69,10 +68,13 @@ class SearchViewModel extends BaseViewModel {
         message: e.toString(),
         duration: const Duration(seconds: 3),
       );
-      notifyListeners();
     } finally {
       setBusy(false);
-      notifyListeners();
     }
+  }
+
+  @override
+  void setFormStatus() {
+    // TODO: implement setFormStatus
   }
 }
