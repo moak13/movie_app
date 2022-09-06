@@ -9,8 +9,13 @@ import 'info_box.dart';
 import 'search_button.dart';
 
 class ContentWidget extends ViewModelWidget<SearchViewModel> {
-  ContentWidget({Key? key}) : super(key: key, reactive: false);
-  final TextEditingController controller = TextEditingController();
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  ContentWidget({
+    Key? key,
+    required this.controller,
+    required this.focusNode,
+  }) : super(key: key, reactive: false);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context, SearchViewModel viewModel) {
@@ -44,6 +49,7 @@ class ContentWidget extends ViewModelWidget<SearchViewModel> {
                 key: _formKey,
                 child: TextFormField(
                   controller: controller,
+                  focusNode: focusNode,
                   decoration: const InputDecoration(
                     hintText: 'Search for a movie',
                   ),
@@ -67,7 +73,7 @@ class ContentWidget extends ViewModelWidget<SearchViewModel> {
         SearchButton(
           onTap: () {
             if (_formKey.currentState?.validate() ?? false) {
-              viewModel.actionSearchMovie(title: controller.text.trim());
+              viewModel.actionSearchMovie();
             }
           },
         ),

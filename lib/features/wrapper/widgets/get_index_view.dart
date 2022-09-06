@@ -13,7 +13,7 @@ class GetIndexView extends StatelessWidget {
       case 0:
         return const MoviesView();
       case 1:
-        return const SearchView();
+        return SearchView();
       default:
         return const MoviesView();
     }
