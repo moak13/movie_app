@@ -38,7 +38,7 @@ class BlockedStore {
   }
 
   Future<bool> isBlocked({String? title}) async {
-    _log.i('checking blocked state for $title');
+    _log.i('checking blocked states for $title');
     bool status = false;
     var records = await _databaseService.database!.query(
       _blockedTable,
