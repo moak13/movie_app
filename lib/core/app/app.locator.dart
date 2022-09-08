@@ -13,7 +13,6 @@ import 'package:stacked_services/stacked_services.dart';
 import '../services/connectivity_service.dart';
 import '../services/data_connection_service.dart';
 import '../services/database_service.dart';
-import '../services/information_service.dart';
 import '../services/movie_service.dart';
 import '../services/network_service.dart';
 import '../stores/blocked_store.dart';
@@ -34,7 +33,6 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => DatabaseService());
   locator.registerLazySingleton(() => MovieStore());
   locator.registerLazySingleton(() => BlockedStore());
-  locator.registerLazySingleton(() => InformationService());
   locator.registerLazySingleton<DataConnectionService>(
       () => DataConnectionServiceImpl());
   locator.registerLazySingleton<ConnectivityService>(
