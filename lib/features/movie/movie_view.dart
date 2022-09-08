@@ -12,17 +12,16 @@ import 'widgets/plot_holder.dart';
 
 class MovieView extends StatelessWidget {
   final Movie? movie;
-  const MovieView({Key? key, this.movie}) : super(key: key);
+  const MovieView({
+    Key? key,
+    this.movie,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     SizeMg.init(context);
     return ViewModelBuilder<MovieViewModel>.reactive(
-      onModelReady: (model) {
-        model.checkIsSaved(movie: movie);
-        model.checkIsBlocked(movie: movie);
-      },
       viewModelBuilder: () => MovieViewModel(movie),
       builder: (
         BuildContext context,
@@ -42,29 +41,31 @@ class MovieView extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Builder(builder: (context) {
-                    if (movie?.poster == 'N/A') {
-                      return ImageErrorWidget(
-                        height: SizeMg.height(300),
-                      );
-                    }
-                    return AppCacheNetworkImage(
-                      imageUrl: '${movie?.poster}',
-                      height: SizeMg.height(300),
-                      imageBuilder: (context, imageProvider) {
-                        return Container(
+                  Builder(
+                    builder: (context) {
+                      if (movie?.poster == 'N/A') {
+                        return ImageErrorWidget(
                           height: SizeMg.height(300),
-                          width: SizeMg.screenWidth,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage('${movie?.poster}'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
                         );
-                      },
-                    );
-                  }),
+                      }
+                      return AppCacheNetworkImage(
+                        imageUrl: '${movie?.poster}',
+                        height: SizeMg.height(300),
+                        imageBuilder: (context, imageProvider) {
+                          return Container(
+                            height: SizeMg.height(300),
+                            width: SizeMg.screenWidth,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage('${movie?.poster}'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                   Positioned(
                     top: SizeMg.height(10),
                     right: SizeMg.width(10),
@@ -181,49 +182,53 @@ class MovieView extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Builder(builder: (context) {
-                          if (!model.isSavedStateReady) {
-                            return const CircularProgressIndicator.adaptive();
-                          }
-                          if (model.isSaved == true) {
+                        Builder(
+                          builder: (context) {
+                            if (!model.isSavedStateReady) {
+                              return const CircularProgressIndicator.adaptive();
+                            }
+                            if (model.savedState == true) {
+                              return ActionButton(
+                                title: 'Unfavorite',
+                                icon: Icons.favorite,
+                                onTap: () {
+                                  model.actionUnsaveMovie(movie: movie);
+                                },
+                              );
+                            }
                             return ActionButton(
-                              title: 'Unfavorite',
-                              icon: Icons.favorite,
+                              title: 'Favorite',
+                              icon: Icons.favorite_outline,
                               onTap: () {
-                                model.actionUnsaveMovie(movie: movie);
+                                model.actionSaveMovie(movie: movie);
                               },
                             );
-                          }
-                          return ActionButton(
-                            title: 'Favorite',
-                            icon: Icons.favorite_outline,
-                            onTap: () {
-                              model.actionSaveMovie(movie: movie);
-                            },
-                          );
-                        }),
-                        Builder(builder: (context) {
-                          if (!model.isBlockedStateReady) {
-                            return const CircularProgressIndicator.adaptive();
-                          }
-                          if (model.isBlocked == true) {
-                            return ActionButton(
-                              title: 'Unblock',
-                              icon: Icons.circle_outlined,
-                              onTap: () {
-                                model.actionUnblockMovie(movie: movie);
-                              },
-                            );
-                          }
+                          },
+                        ),
+                        Builder(
+                          builder: (context) {
+                            if (!model.isBlockedStateReady) {
+                              return const CircularProgressIndicator.adaptive();
+                            }
+                            if (model.blockedState == true) {
+                              return ActionButton(
+                                title: 'Unblock',
+                                icon: Icons.circle_outlined,
+                                onTap: () {
+                                  model.actionUnblockMovie(movie: movie);
+                                },
+                              );
+                            }
 
-                          return ActionButton(
-                            title: 'Block',
-                            icon: Icons.block,
-                            onTap: () {
-                              model.actionBlockMovie(movie: movie);
-                            },
-                          );
-                        }),
+                            return ActionButton(
+                              title: 'Block',
+                              icon: Icons.block,
+                              onTap: () {
+                                model.actionBlockMovie(movie: movie);
+                              },
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ],

@@ -5,7 +5,6 @@ import '../../../core/app/app.locator.dart';
 import '../../../core/enum/snack_bar_enum.dart';
 import '../../../core/extensions/string_extenstion.dart';
 import '../../../core/models/movie_model.dart';
-import '../../../core/services/information_service.dart';
 import '../../../core/stores/blocked_store.dart';
 import '../../../core/stores/movie_store.dart';
 
@@ -16,17 +15,12 @@ class MovieViewModel extends MultipleStreamViewModel {
   final _snackbarService = locator<SnackbarService>();
   final _movieStore = locator<MovieStore>();
   final _blockedStore = locator<BlockedStore>();
-  final _informationService = locator<InformationService>();
 
   Movie? _movie;
 
   MovieViewModel(Movie? movie) {
     _movie = movie;
-    notifyListeners();
   }
-
-  bool get isBlocked => _informationService.blockedStatus;
-  bool get isSaved => _informationService.savedStatus;
 
   bool get savedState => dataMap![_movieSavedStreamKey];
   bool get isSavedStateReady => dataReady(_movieSavedStreamKey);
@@ -97,17 +91,15 @@ class MovieViewModel extends MultipleStreamViewModel {
   }
 
   Future<bool> checkIsBlocked({Movie? movie}) async {
-    await _informationService.getBlockedState(
-        title: movie?.title?.capitalizeFirst);
-    initialise();
-    return isBlocked;
+    bool result =
+        await _blockedStore.isBlocked(title: movie?.title?.capitalizeFirst);
+    return result;
   }
 
   Future<bool> checkIsSaved({Movie? movie}) async {
-    await _informationService.getSavedState(
-        title: movie?.title?.capitalizeFirst);
-    initialise();
-    return isSaved;
+    bool result =
+        await _movieStore.isSaved(title: movie?.title?.capitalizeFirst);
+    return result;
   }
 
   void _snackbarHandler({
@@ -119,7 +111,7 @@ class MovieViewModel extends MultipleStreamViewModel {
       message: message,
       variant: variant,
       title: title,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 4),
     );
   }
 
@@ -136,7 +128,4 @@ class MovieViewModel extends MultipleStreamViewModel {
           ),
         ),
       };
-
-  @override
-  List<ReactiveServiceMixin> get reactiveServices => [_informationService];
 }
